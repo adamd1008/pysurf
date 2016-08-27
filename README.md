@@ -1,4 +1,4 @@
-# surf
+# pysurf
 
 This is a set of Python classes designed to make surfing easy! Surfing as in surfing on Counter-Strike and other Valve GoldSrc/Source games.
 
