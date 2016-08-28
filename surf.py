@@ -256,7 +256,7 @@ class SurfDb(object):
    
    @staticmethod
    def mon(delay = 180):
-      SurfDb.monitor()
+      SurfDb.monitor(delay)
    
    @staticmethod
    def getNextServerID():
