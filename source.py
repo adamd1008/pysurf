@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Adam Dodd
+# Copyright (c) 2019 Adam Dodd
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -125,15 +125,15 @@ class SourceServer(object):
       conn.close()
    
    def _ping(self, timeout):
-      request_packet = "\xff\xff\xff\xff\x54\x53\x6f\x75\x72\x63\x65\x20\x45" \
-                       "\x6e\x67\x69\x6e\x65\x20\x51\x75\x65\x72\x79\x00"
+      req = b"\xff\xff\xff\xff\x54\x53\x6f\x75\x72\x63\x65\x20\x45" + \
+            b"\x6e\x67\x69\x6e\x65\x20\x51\x75\x65\x72\x79\x00"
       
       sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
       sock.settimeout(timeout)
       sock.connect((self.addr, self.port))
       
       t1 = time.time()
-      sock.sendall(request_packet)
+      sock.sendall(req)
       
       try:
          reply = sock.recv(4096)
@@ -162,52 +162,52 @@ class SourceServer(object):
       else:
          self._online = True
          
-         self._header = struct.unpack('B', reply[4])[0]
-         self._protocol = int(struct.unpack('B', reply[5])[0])
+         self._header = chr(reply[4])
+         self._protocol = chr(reply[5])
          
          i = 6
          
-         while reply[i] != '\x00':
+         while reply[i] != 0:
             i += 1
          
-         self._name = reply[6:i]
+         self._name = reply[6:i].decode("utf8")
          i += 1
          j = i
          
-         while reply[i] != '\x00':
+         while reply[i] != 0:
             i += 1
          
-         self._map = reply[j:i].lower()
+         self._map = reply[j:i].decode("utf8").lower()
          i += 1
          j = i
          
-         while reply[i] != '\x00':
+         while reply[i] != 0:
             i += 1
          
-         self._folder = reply[j:i]
+         self._folder = reply[j:i].decode("utf8")
          i += 1
          j = i
          
-         while reply[i] != '\x00':
+         while reply[i] != 0:
             i += 1
          
-         self._game = reply[j:i]
+         self._game = reply[j:i].decode("utf8")
          i += 1
          self._gameID = struct.unpack('H', reply[i:i + 2])[0]
          i += 2
-         self._players = int(struct.unpack('B', reply[i])[0])
+         self._players = reply[i]
          i += 1
-         self._max_players = int(struct.unpack('B', reply[i])[0])
+         self._max_players = reply[i]
          i += 1
-         self._bots = int(struct.unpack('B', reply[i])[0])
+         self._bots = reply[i]
          i += 1
-         self._type = reply[i]
+         self._type = chr(reply[i])
          i += 1
-         self._env = reply[i]
+         self._env = chr(reply[i])
          i += 1
-         self._vis = bool(struct.unpack('B', reply[i])[0])
+         self._vis = bool(reply[i])
          i += 1
-         self._vac = bool(struct.unpack('B', reply[i])[0])
+         self._vac = bool(reply[i])
       
       self._pinged = True
    
@@ -227,18 +227,18 @@ class SourceServer(object):
          sys.stdout.write("\n")
          
          if self._online:
-            print "Space now available; joining (%d/%d)" % (self._players,
-                  self._max_players)
+            print("Space now available; joining (%d/%d)" % (self._players,
+                  self._max_players))
             webbrowser.open("steam://connect/%s:%d" % (self.addr, self.port))
          else:
-            print "Server \"%s\" has gone offline" % (self.nick,)
+            print("Server \"%s\" has gone offline" % (self.nick,))
       elif self._online:
-         print "Joining server \"%s\" on \"%s\" (%d/%d)" % (self.nick,
-               self._map, self._players, self._max_players)
+         print("Joining server \"%s\" on \"%s\" (%d/%d)" % (self.nick,
+               self._map, self._players, self._max_players))
          webbrowser.open("steam://connect/%s:%d" % (self.addr, self.port))
          # Consider FancyURLopener() if this doesn't work on some platform?
       else:
-         print "Server \"%s\" is offline" % (self.nick,)
+         print("Server \"%s\" is offline" % (self.nick,))
    
    @staticmethod
    def pingAll(servers):

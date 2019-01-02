@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Adam Dodd
+# Copyright (c) 2019 Adam Dodd
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -107,9 +107,9 @@ class SurfMap(object):
          
          if sys.stdin.read(1).lower() == 'y':
             cur.execute("DELETE FROM maps WHERE `name`=?", (self._name,))
-            print "Map \"%s\" deleted" % (self._name,)
+            print("Map \"%s\" deleted" % (self._name,))
          else:
-            print "Delete aborted"
+            print("Delete aborted")
       else:
          cur.execute("DELETE FROM maps WHERE `name`=?", (self._name,))
       
@@ -193,19 +193,19 @@ class SurfDb(object):
             if mapLen > maxMapLen:
                maxMapLen = mapLen
       
-      print "=" * (maxNickLen + 7 + maxMapLen + 7) \
-            + "=============================================="
-      print " ID | Server" + " " * (maxNickLen + 1) + "| Game | Map" + " " * \
-            (maxMapLen + 4) + "| Tier | Rating | Comp  | Ping"
+      print("=" * (maxNickLen + 7 + maxMapLen + 7) \
+            + "==============================================")
+      print(" ID | Server" + " " * (maxNickLen + 1) + "| Game | Map" + " " * \
+            (maxMapLen + 4) + "| Tier | Rating | Comp  | Ping")
       
       for i, server in enumerate(servers):
          if first:
-            print "====|" + "=" * (maxNickLen + 8) + "|======|" + "=" \
-                  * (maxMapLen + 8) + "|======|========|=======|======"
+            print("====|" + "=" * (maxNickLen + 8) + "|======|" + "=" \
+                  * (maxMapLen + 8) + "|======|========|=======|======")
             first = False
          else:
-            print "----|" + "-" * (maxNickLen + 8) + "|------|" + "-" \
-                  * (maxMapLen + 8) + "|------|--------|-------|------"
+            print("----|" + "-" * (maxNickLen + 8) + "|------|" + "-" \
+                  * (maxMapLen + 8) + "|------|--------|-------|------")
       
          if server._online:
             # Find map the server is on!!
@@ -222,27 +222,27 @@ class SurfDb(object):
                         "| {:>4d} | {:<" + str(maxMapLen) + "s}  -/-  |    - " \
                         "|      - |   -   | {:>4}"
             
-               print outStr.format(i, server.nick, server._players,
+               print(outStr.format(i, server.nick, server._players,
                                    server._max_players, server._gameID,
-                                   server._map, server._latency)
+                                   server._map, server._latency))
             else:
                outStr = "{:>3d} | {:<" + str(maxNickLen) + "s} {:>2d}/{:<2d} " \
                         "| {:>4d} | {:<" + str(maxMapLen) + "s} {:>2d}/{:<2d}" \
                         " | {:>4d} | {:>6d} | {:<5s} | {:>4}"
             
-               print outStr.format(i, server.nick, server._players,
+               print(outStr.format(i, server.nick, server._players,
                                    server._max_players, server._gameID,
                                    server._map, thisMap.stages, thisMap.bonus,
                                    thisMap.tier, thisMap.rating,
-                                   str(thisMap.complete), server._latency)
+                                   str(thisMap.complete), server._latency))
          else:
             outStr = "{:>3d} | {:<" + str(maxNickLen + 6) + "s} |      | {:<" \
                   + str(maxMapLen + 6) + "s} |      |        |       |"
          
-            print outStr.format(i, server.nick, "(offline!)")
+            print(outStr.format(i, server.nick, "(offline!)"))
    
-      print "=" * (maxNickLen + 7 + maxMapLen + 7) \
-            + "=============================================="
+      print("=" * (maxNickLen + 7 + maxMapLen + 7) \
+            + "==============================================")
    
    @staticmethod
    def pp():
@@ -270,7 +270,7 @@ class SurfDb(object):
       row = cur.fetchone()
       
       if row == None:
-         print "Couldn't get next free ID!"
+         print("Couldn't get next free ID!")
          ret = -1
       else:
          ret = int(row[0])
@@ -290,6 +290,6 @@ class SurfDb(object):
       m = SurfMap(name)
       
       if not m.get():
-         print "Map not found; returning defaults"
+         print("Map not found; returning defaults")
       
       return m
