@@ -8,7 +8,7 @@ A little knowledge of languages like Python and relational databases (you know, 
 
 ## Getting started (Windows)
 
-* If you don't have it already, download Python 2.7 from https://www.python.org/downloads/
+* If you don't have it already, download the latest Python 3.X.X from https://www.python.org/downloads/
 * Ensure the path to `python.exe` is in your PATH environment variable
 * Make a shortcut on your desktop of `run.bat`
 

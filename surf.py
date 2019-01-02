@@ -293,3 +293,5 @@ class SurfDb(object):
          print("Map not found; returning defaults")
       
       return m
+
+assert sys.version_info[0] >= 3
