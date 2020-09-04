@@ -259,13 +259,13 @@ class SurfDb(object):
       SurfDb.prettyPrint()
 
    @staticmethod
-   def monitor(delay = 180):
+   def monitor(delay = 30):
       while True:
          SurfDb.prettyPrint()
          time.sleep(delay)
 
    @staticmethod
-   def mon(delay = 180):
+   def mon(delay = 30):
       SurfDb.monitor(delay)
 
    @staticmethod

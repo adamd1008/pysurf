@@ -200,7 +200,7 @@ class SourceServer(object):
 
          self._game = reply[j:i].decode("utf8")
          i += 1
-         self._gameID = struct.unpack('H', reply[i:i + 2])[0]
+         self._gameID = struct.unpack('<H', reply[i:i + 2])[0]
          i += 2
          self._players = reply[i]
          i += 1
